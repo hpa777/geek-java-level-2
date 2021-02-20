@@ -21,7 +21,6 @@ public class KeyListener extends Thread {
         while (!isInterrupted()) {
             String inputString = "";
             try {
-                //  Т.к. nextLine блокирующий метод, нет возможности корректно прервать поток.
                 inputString = keyScanner.nextLine();
             }
             catch (NoSuchElementException e) {

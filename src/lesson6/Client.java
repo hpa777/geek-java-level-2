@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Client {
@@ -18,12 +19,17 @@ public class Client {
              PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);) {
             System.out.println("Server connected");
             KeyListener keyListener = new KeyListener(printWriter);
+            keyListener.setDaemon(true);
             keyListener.start();
             while (true) {
-                String str = scanner.nextLine();
+                String str = "";
+                try {
+                    str = scanner.nextLine();
+                } catch (NoSuchElementException e) {
+                    break;
+                };
                 if (str.equals("/end")) {
                     System.out.println("Server disconnect");
-                    keyListener.interrupt();
                     break;
                 }
                 System.out.println("Server: " + str);
